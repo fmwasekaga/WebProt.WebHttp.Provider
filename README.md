@@ -12,6 +12,7 @@ A http/https plugin using the [uhttpsharp](https://github.com/bonesoul/uhttpshar
     │   └── ... .zip
 	├── WebProt.exe
 	:
+	├── Logging.io.dll
 	└── Plugable.io.dll
 	
 ### Dev structure
@@ -22,6 +23,7 @@ A http/https plugin using the [uhttpsharp](https://github.com/bonesoul/uhttpshar
 	├── ThirdParty
     │   └── uHttpSharp
     │   └── ...
+	├── Logging.io
 	├── Plugable.io
 	:
 	└── WebProt
