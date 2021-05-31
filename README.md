@@ -13,3 +13,15 @@ A http/https plugin using the [uhttpsharp](https://github.com/bonesoul/uhttpshar
 	├── WebProt.exe
 	:
 	└── Plugable.io.dll
+	
+### Dev structure
+    .
+	├── Plugins
+    │   └── WebProt.WebHttp.Provider
+    │   └── ...
+	├── ThirdParty
+    │   └── uHttpSharp
+    │   └── ...
+	├── Plugable.io
+	:
+	└── WebProt
