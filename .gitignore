@@ -2,3 +2,5 @@
 obj/
 bin/
 packages/
+Plugins/WebProt.WebHttp.Provider/WebProt.WebHttp.Provider_dev.csproj
+Plugins/WebProt.WebHttp.Provider/WebProt.WebHttp.Provider_dev.sln
