@@ -20,6 +20,7 @@ using uhttpsharp.Listeners;
 using uhttpsharp.RequestProviders;
 using WebProt.WebHttp.Provider.Extensions;
 using WebProt.WebHttp.Provider.Handlers;
+using WebProt.WebHttp.Provider.Helpers;
 #endregion
 
 namespace WebProt.WebHttp.Provider
@@ -29,7 +30,7 @@ namespace WebProt.WebHttp.Provider
         #region Variables
         private PluginsManager server;
         private ILog Logger = LogProvider.GetCurrentClassLogger();
-        private IList<IRequestProvider> _providers;
+        private IList<IHttpRequestProvider> _providers;
         private bool _isActive;
 
         public const string WebProtNotifierProvider = "WebProt.WebSocket.Provider";
@@ -38,7 +39,7 @@ namespace WebProt.WebHttp.Provider
         #region Initialize
         public void Initialize(string[] args, PluginsManager server)
         {
-            _providers = new List<IRequestProvider>();
+            _providers = new List<IHttpRequestProvider>();
 
             if (args.Length > 0)
             {
@@ -50,7 +51,7 @@ namespace WebProt.WebHttp.Provider
                 try {
                     ValueArgument<string> argument = new ValueArgument<string>('p', "hp", "Arguements for this plugin");
 
-                    var _parser = new CommandLineParser.CommandLineParser(args);
+                    var _parser = new CustomCommandLineParser(args);
                     _parser.Arguments.Add(argument);
                     _parser.ParseCommandLine();
 
@@ -72,7 +73,7 @@ namespace WebProt.WebHttp.Provider
 
                 if (parsedArgs != null)
                 {
-                    var parser = new CommandLineParser.CommandLineParser(parsedArgs);
+                    var parser = new CustomCommandLineParser(parsedArgs);
 
                     ValueArgument<int> nonSecuredArgument = new ValueArgument<int>('h', "http", "The http port");
                     nonSecuredArgument.AllowMultiple = true;
@@ -210,7 +211,7 @@ namespace WebProt.WebHttp.Provider
             {
                 foreach (var listener in provider.getListeners())
                 {
-                    IListener tempListener = listener;
+                    IHttpListener tempListener = listener;
 
                     Task.Factory.StartNew(() => Listen(tempListener, provider), TaskCreationOptions.LongRunning);
                 }
@@ -226,7 +227,7 @@ namespace WebProt.WebHttp.Provider
         #endregion
 
         #region Listen
-        private async void Listen(IListener _listener, IRequestProvider _requestProvider)
+        private async void Listen(IHttpListener _listener, IHttpRequestProvider _requestProvider)
         {
             var aggregatedHandler = _requestProvider.getRequestHandlers().Aggregate();
 

@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using uhttpsharp;
-using uhttpsharp.Events;
+using uhttpsharp.Exceptions;
 using WebProt.WebHttp.Provider.Extensions;
 using WebProt.WebHttp.Provider.Helpers;
 #endregion
