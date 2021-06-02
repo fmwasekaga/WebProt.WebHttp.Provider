@@ -156,8 +156,8 @@ namespace WebProt.WebHttp.Provider
                         provider
                             .Uses(new CompressionHandler(DeflateCompressor.Default, GZipCompressor.Default))
                             .Uses(new LoggingHandler(server))
-                            .Uses(new APIHandler(server, TimeSpan.FromMinutes(5))
-                                .With("*", (router, ctx, data, handler) =>
+                            .Uses(new APIHandler(TimeSpan.FromMinutes(5))
+                                .With("*", (ctx, data, handler) =>
                                 {
                                     return ctx.OutputUtf8(JsonConvert.SerializeObject(new
                                     {
@@ -167,7 +167,7 @@ namespace WebProt.WebHttp.Provider
                                         Request = "*"
                                     }), "application/json");
                                 })
-                                .With(@"/shutdown/{email}", (router, ctx, data, handler) =>
+                                .With(@"/shutdown/{email}", (ctx, data, handler) =>
                                 {
                                     var email = data["email"];
                                     if (!string.IsNullOrEmpty(email))

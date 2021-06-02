@@ -5,26 +5,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using uhttpsharp;
 using uhttpsharp.Headers;
-using uhttpsharp.Helpers;
-using uhttpsharp.Interfaces;
 using WebProt.WebHttp.Provider.Extensions;
+using WebProt.WebHttp.Provider.Helpers;
 
 namespace WebProt.WebHttp.Provider.Handlers
 {
     public class APIHandler : IHttpRequestHandler
     {
         private Router _router;
-        private PluginsManager _server;
         private TimeSpan _timeout;
 
-        public APIHandler(PluginsManager server, TimeSpan timeout)
+        public APIHandler(TimeSpan timeout)
         {
             _router = new Router();
             _timeout = timeout;
-            _server = server;
         }
 
-        public APIHandler With(string path, RouteAction fn)
+        public APIHandler With(string path, Func<IHttpContext, Dictionary<string, string>, Func<Task>, Task> fn)
         {
             _router.Add(path, fn);
             return this;
@@ -37,17 +34,7 @@ namespace WebProt.WebHttp.Provider.Handlers
                 foreach (var plugin in plugins)
                 {
                     if (plugin != null)
-                    {
-                        var _r = (IRoutable)plugin;
-                        if(_r != null)
-                        {
-                            _r.Initialize(args, _server, _router);
-                            foreach (var route in _r.GetRoutes())
-                            {
-                                _router.Add(route.Key, route.Value);
-                            }
-                        }                        
-                    }
+                        plugin.Initialize(args, parent, _router);
                 }
             }
             return this;
@@ -55,12 +42,12 @@ namespace WebProt.WebHttp.Provider.Handlers
 
         public Task Handle(IHttpContext context, Func<Task> nextHandler)
         {
-            RouteAction fnRoute;
+            Func<IHttpContext, Dictionary<string, string>, Func<Task>, Task> fnRoute;
             Dictionary<string, string> data;
             if (_router.TryGetValue(context.Request.Uri.ToString(), out fnRoute, out data)
                     || _router.TryGetValue("*", out fnRoute, out data))
             {
-                return fnRoute(_router, context, data, nextHandler).WithTimeout(_timeout);
+                return fnRoute(context, data, nextHandler).WithTimeout(_timeout);
             }
             else
             {

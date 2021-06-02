@@ -54,6 +54,7 @@
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Handlers\APIHandler.cs" />
     <Compile Include="Handlers\LoggingHandler.cs" />
+    <Compile Include="Helpers\Router.cs" />
     <Compile Include="Helpers\Usage.cs" />
     <Compile Include="WebExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
