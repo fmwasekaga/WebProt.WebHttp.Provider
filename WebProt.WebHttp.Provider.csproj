@@ -91,6 +91,6 @@
       </ZipFiles>
     </ItemGroup>
     <Message Text="Zipping output files: @(ZipFiles)" Importance="high" />
-    <Zip ZipFileName="..\..\$(SolutionName)\$(OutDir)extensions\$(ProjectName)_%(AssemblyInfo.Version).zip" WorkingDirectory="$(OutDir)" Files="@(ZipFiles)" />
+    <Zip ZipFileName="..\..\WebProt\$(OutDir)extensions\$(ProjectName)_%(AssemblyInfo.Version).zip" WorkingDirectory="$(OutDir)" Files="@(ZipFiles)" />
   </Target>
 </Project>

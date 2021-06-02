@@ -135,15 +135,22 @@ namespace WebProt.WebHttp.Provider
 
                         if (SecuredArgument != null)
                         {
-                            foreach (var value in SecuredArgument.Values)
-                            {
-                                if (serverCertificate == null)
-                                    serverCertificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(Path.Combine("certificates", "server.pfx"), "admin123$");
+                            var certFile = Path.Combine("certificates", "server.pfx");
+                            var certPass = "admin123$";
 
-                                provider.Use(new ListenerSslDecorator(new TcpListenerAdapter(new TcpListener(IPAddress.Any, value)), serverCertificate));
-                                if (CurrentIP != null) Logger.InfoFormat(getName() + " listening on https://{0}:{1}", CurrentIP, value);
-                                else Logger.InfoFormat(getName() + " listening (https) on {0}", value);
+                            if (File.Exists(certFile))
+                            {
+                                foreach (var value in SecuredArgument.Values)
+                                {
+                                    if (serverCertificate == null)
+                                        serverCertificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(certFile, certPass);
+
+                                    provider.Use(new ListenerSslDecorator(new TcpListenerAdapter(new TcpListener(IPAddress.Any, value)), serverCertificate));
+                                    if (CurrentIP != null) Logger.InfoFormat(getName() + " listening on https://{0}:{1}", CurrentIP, value);
+                                    else Logger.InfoFormat(getName() + " listening (https) on {0}", value);
+                                }
                             }
+                            else Logger.InfoFormat(getName() + " cant create https : {0}", "missing certificate");
                         }
 
                         provider
