@@ -68,10 +68,6 @@
       <Project>{1a3c2477-db30-488f-a2ea-5fbe4d18a091}</Project>
       <Name>Plugable.io</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ThirdParty\CommandLineParser\CommandLineParser.csproj">
-      <Project>{dcf8e084-93ed-4dca-bca1-6fbd6c64932a}</Project>
-      <Name>CommandLineParser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ThirdParty\uHttpSharp\uhttpsharp\uhttpsharp.csproj">
       <Project>{3d681959-4da3-4a71-a68b-704d6411d5ea}</Project>
       <Name>uhttpsharp</Name>
